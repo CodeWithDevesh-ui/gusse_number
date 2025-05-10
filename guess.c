@@ -10,14 +10,14 @@ int main()
     srand(time(0));
     while (playAgain == 'y' || playAgain == 'Y')
     {
-        // Initialize random number generator
+        
 
-        // Generate random number between 1 and 100
+        
         int randomNumber = (rand() % 100) + 1;
         int no_of_guess = 0;
         int guesse = 0;
         int guessedCorrectly =0;
-        // char playAgain;
+        
         printf("The game has started!\nYou have maximum of %d tries\n", MAX_GUESSES);
         while (guesse != randomNumber&&no_of_guess<MAX_GUESSES)
         {
