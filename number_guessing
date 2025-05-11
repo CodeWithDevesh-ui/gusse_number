@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guess the Number Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🎯 Guess the Number Game</h2>
+<p>Guess a number between 1 and 100. You have <strong>10 tries</strong>!</p>
+
+<input type="number" id="userGuess" placeholder="Enter your guess" min="1" max="100">
+<button onclick="makeGuess()">Submit Guess</button>
+<button onclick="startGame()">Restart Game</button>
+
+<div id="output"></div>
+
+<script>
+    const MAX_GUESSES = 10;
+    let randomNumber;
+    let no_of_guess;
+    let bestScore = null;
+    let gameActive = true;
+
+    function startGame() {
+        randomNumber = Math.floor(Math.random() * 100) + 1;
+        no_of_guess = 0;
+        gameActive = true;
+        document.getElementById("output").innerHTML = "Game started! Try to guess the number.";
+        console.log("Debug: Random number is", randomNumber); // You can remove this in production
+    }
+
+    function makeGuess() {
+        if (!gameActive) {
+            document.getElementById("output").innerHTML = "The game is over. Click 'Restart Game' to play again.";
+            return;
+        }
+
+        const guess = parseInt(document.getElementById("userGuess").value);
+        if (isNaN(guess) || guess < 1 || guess > 100) {
+            document.getElementById("output").innerHTML = "Please enter a valid number between 1 and 100.";
+            return;
+        }
+
+        no_of_guess++;
+
+        if (guess === randomNumber) {
+            let result = `🎉 Correct! You guessed the number ${randomNumber} in ${no_of_guess} ${no_of_guess === 1 ? "try" : "tries"}.<br>`;
+            if (bestScore === null || no_of_guess < bestScore) {
+                bestScore = no_of_guess;
+                result += "🏆 New best score!<br>";
+            }
+            result += `Best score so far: ${bestScore} ${bestScore === 1 ? "try" : "tries"}.`;
+            gameActive = false;
+            document.getElementById("output").innerHTML = result;
+        } else if (no_of_guess >= MAX_GUESSES) {
+            gameActive = false;
+            let result = `❌ You've used all ${MAX_GUESSES} tries! The correct number was ${randomNumber}.<br>`;
+            if (bestScore !== null) {
+                result += `Best score so far: ${bestScore} ${bestScore === 1 ? "try" : "tries"}.`;
+            } else {
+                result += "No best score yet. Try again!";
+            }
+            document.getElementById("output").innerHTML = result;
+        } else if (guess > randomNumber) {
+            document.getElementById("output").innerHTML = "📉 Too high! Try a lower number.";
+        } else {
+            document.getElementById("output").innerHTML = "📈 Too low! Try a higher number.";
+        }
+    }
+
+    // Start the first game on page load
+    startGame();
+</script>
+
+</body>
+</html>
